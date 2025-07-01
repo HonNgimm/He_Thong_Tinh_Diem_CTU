@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Hệ thống Tính điểm Tổ Hợp CTU</title>
+  <link rel="shortcut icon" href="./icon.png" type="image/x-icon">
+  <style>
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      padding: 30px;
+      margin: 0;
+      background: url("nen-ctu.jpg") no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 25px;
+      max-width: 520px;
+      margin: auto;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #0066cc;
+      text-align: center;
+    }
+
+    label, input, select, button {
+      display: block;
+      margin-top: 12px;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    input, select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px;
+      margin-top: 20px;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #004e99;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>HỆ THỐNG TÍNH ĐIỂM TỔ HỢP V-SAT</h2>
+
+    <label>Điểm V-SAT môn 1 (thang 150):</label>
+    <input type="number" id="mon1" min="0" max="150" step="0.1">
+
+    <label>Điểm V-SAT môn 2:</label>
+    <input type="number" id="mon2" min="0" max="150" step="0.1">
+
+    <label>Điểm V-SAT môn 3:</label>
+    <input type="number" id="mon3" min="0" max="150" step="0.1">
+
+    <label>Mã khu vực (ưu tiên):</label>
+    <select id="khuvuc">
+      <option value="KV1">KV1</option>
+      <option value="KV2-NT">KV2-NT</option>
+      <option value="KV2">KV2</option>
+      <option value="KV3">KV3</option>
+    </select>
+
+    <button onclick="tinhDiem()">Tính tổng điểm</button>
+
+    <div class="result" id="output"></div>
+
+    <h2>HỆ THỐNG TÍNH ĐIỂM TỔ HỢP HỌC BẠ</h2>
+
+    <label>Điểm học bạ môn 1 (thang 10):</label>
+    <input type="number" id="hb1" min="0" max="10" step="0.01">
+
+    <label>Điểm học bạ môn 2:</label>
+    <input type="number" id="hb2" min="0" max="10" step="0.01">
+
+    <label>Điểm học bạ môn 3:</label>
+    <input type="number" id="hb3" min="0" max="10" step="0.01">
+
+    <label>Mã khu vực (ưu tiên):</label>
+    <select id="khuvucHB">
+      <option value="KV1">KV1</option>
+      <option value="KV2-NT">KV2-NT</option>
+      <option value="KV2">KV2</option>
+      <option value="KV3">KV3</option>
+    </select>
+
+    <button onclick="tinhDiemHB()">Tính điểm học bạ</button>
+
+    <div class="result" id="outputHB"></div>
+
+  </div>
+
+  <script>
+    const quyTac1 = [
+      { a: 130, b: 150, c: 9.5, d: 10.0 },
+      { a: 115, b: 130, c: 9.0, d: 9.5 },
+      { a: 100, b: 115, c: 8.0, d: 9.0 },
+      { a: 85,  b: 100, c: 7.0, d: 8.0 },
+      { a: 70,  b: 85,  c: 6.0, d: 7.0 },
+      { a: 55,  b: 70,  c: 5.0, d: 6.0 },
+      { a: 0,   b: 55,  c: 0.0, d: 5.0 }
+    ];
+
+    const quyTac2 = [
+  { a: 137.0, b: 150.0, c: 9.0, d: 10.0 },     // Top 1%
+  { a: 127.5, b: 137.0, c: 8.8, d: 9.0 },      // Top 5%
+  { a: 121.0, b: 127.5, c: 8.6, d: 8.8 },      // Top 10%
+  { a: 112.5, b: 121.0, c: 8.4, d: 8.6 },      // Top 20%
+  { a: 106.0, b: 112.5, c: 8.2, d: 8.4 },      // Top 30%
+  { a: 99.5,  b: 106.0, c: 8.0, d: 8.2 },      // Top 40%
+  { a: 94.0,  b: 99.5,  c: 7.8, d: 8.0 },      // Top 50%
+  { a: 88.0,  b: 94.0,  c: 7.6, d: 7.8 },      // Top 60%
+  { a: 81.5,  b: 88.0,  c: 7.4, d: 7.6 },      // Top 70%
+  { a: 74.0,  b: 81.5,  c: 7.0, d: 7.4 },      // Top 80%
+  { a: 64.0,  b: 74.0,  c: 6.4, d: 7.0 }       // Trên 80%
+];
+
+
+    const quyTacHB = [
+    { a: 9.37, b: 10.00, c: 8.60, d: 9.80 },   // Top 5%
+  { a: 9.10, b: 9.37, c: 8.40, d: 8.60 },    // Top 10%
+  { a: 8.73, b: 9.10, c: 8.00, d: 8.40 },    // Top 20%
+  { a: 8.40, b: 8.73, c: 7.80, d: 8.00 },    // Top 30%
+  { a: 8.10, b: 8.40, c: 7.60, d: 7.80 },    // Top 40%
+  { a: 7.77, b: 8.10, c: 7.20, d: 7.60 },    // Top 50%
+  { a: 7.43, b: 7.77, c: 7.00, d: 7.20 },    // Top 60%
+  { a: 7.07, b: 7.43, c: 6.60, d: 7.00 },    // Top 70%
+  { a: 6.63, b: 7.07, c: 6.20, d: 6.60 },    // Top 80%
+  { a: 6.07, b: 6.63, c: 5.40, d: 6.20 },    // Top 90%
+  { a: 1.99, b: 6.07, c: 1.00, d: 5.40 }     // Trên 90%
+    ];
+
+    const uuTienKhuVuc = {
+      "KV1": 0.75,
+      "KV2-NT": 0.5,
+      "KV2": 0.25,
+      "KV3": 0.0
+    };
+
+    function noiSuy(x, bang) {
+      for (let i = 0; i < bang.length; i++) {
+        let { a, b, c, d } = bang[i];
+        if (x >= a && x <= b) {
+          return c + ((x - a) * (d - c)) / (b - a);
+        }
+      }
+      return 0;
+    }
+
+    function tinhUuTien(goc, diemTruoc) {
+      if (diemTruoc >= 30) return 0;
+      if (diemTruoc <= 22.5) return goc;
+      return goc * (1 - (diemTruoc - 22.5) / 7.5);
+    }
+
+    function tinhDiem() {
+      const mon1 = parseFloat(document.getElementById("mon1").value);
+      const mon2 = parseFloat(document.getElementById("mon2").value);
+      const mon3 = parseFloat(document.getElementById("mon3").value);
+      const khuVuc = document.getElementById("khuvuc").value;
+      const output = document.getElementById("output");
+
+      if ([mon1, mon2, mon3].some(d => isNaN(d) || d < 0 || d > 150)) {
+        output.innerText = "⚠️ Vui lòng nhập đúng 3 điểm V-SAT (0–150).";
+        return;
+      }
+
+      const diemQD1 = noiSuy(mon1, quyTac2);
+      const diemQD2 = noiSuy(mon2, quyTac2);
+      const diemQD3 = noiSuy(mon3, quyTac2);
+
+      const diemTruocUuTien = diemQD1 + diemQD2 + diemQD3;
+      const diemUuTien = tinhUuTien(uuTienKhuVuc[khuVuc], diemTruocUuTien);
+      const tong = diemTruocUuTien + diemUuTien;
+
+      output.innerHTML = `
+        ✅ <b>Điểm quy đổi:</b>
+        <ul>
+          <li>V-SAT Môn 1: ${diemQD1.toFixed(2)}</li>
+          <li>V-SAT Môn 2: ${diemQD2.toFixed(2)}</li>
+          <li>V-SAT Môn 3: ${diemQD3.toFixed(2)}</li>
+        </ul>
+
+        🎯 Điểm Ưu Tiên: <strong>${diemUuTien.toFixed(2)}</strong><br>
+        🔢 <strong>Tổng điểm xét tuyển: ${tong.toFixed(2)}</strong><br><br>
+            Kết quả chỉ mang tính chất Tham Thảo!</strong><br>
+           Có thể sai lệch so với Kết quả Chính Thức!</strong>
+      `;
+    }
+  
+    function tinhDiemHB() {
+  const hb1 = parseFloat(document.getElementById("hb1").value);
+  const hb2 = parseFloat(document.getElementById("hb2").value);
+  const hb3 = parseFloat(document.getElementById("hb3").value);
+  const khuVuc = document.getElementById("khuvucHB").value;
+  const output = document.getElementById("outputHB");
+  const diemHB1 = noiSuy(hb1, quyTacHB);
+  const diemHB2 = noiSuy(hb2, quyTacHB);
+  const diemHB3 = noiSuy(hb3, quyTacHB);
+
+  if ([hb1, hb2, hb3].some(d => isNaN(d) || d < 0 || d > 10)) {
+    output.innerText = "⚠️ Vui lòng nhập đúng 3 điểm học bạ (0–10).";
+    return;
+  }
+
+  const diemTruocUuTien = diemHB1 + diemHB2 + diemHB3;
+  const diemUuTien = tinhUuTien(uuTienKhuVuc[khuVuc], diemTruocUuTien);
+  const tong = diemTruocUuTien + diemUuTien;
+  const diemTrungBinh = tong / 3;
+
+  // Tìm mức quy đổi tương ứng
+  const muc = quyTacHB.find(rule => diemTrungBinh > rule.a && diemTrungBinh <= rule.b);
+
+  let quyDoiText = muc 
+    ? `👉 Tương đương điểm TN THPT từ <b>${muc.c.toFixed(2)}</b> đến <b>${muc.d.toFixed(2)}</b>` 
+    : "⚠️ Không tìm thấy mức quy đổi phù hợp.";
+
+      output.innerHTML = `
+        ✅ <b>Điểm từng môn:</b>
+        <ul>
+          <li>Môn 1: ${diemHB1.toFixed(2)}</li>
+          <li>Môn 2: ${diemHB2.toFixed(2)}</li>
+          <li>Môn 3: ${diemHB3.toFixed(2)}</li>
+        </ul>
+
+        🎯 Điểm Ưu Tiên: <strong>${diemUuTien.toFixed(2)}</strong><br>
+        🔢 <strong>Tổng điểm xét tuyển học bạ: ${tong.toFixed(2)}</strong><br><br>
+            Kết quả chỉ mang tính chất Tham Thảo!<br>
+            Có thể sai lệch so với Kết quả Chính Thức!
+      `;
+    }
+
+</script>
+</body>
+</html>
