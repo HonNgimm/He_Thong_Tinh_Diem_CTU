@@ -14,14 +14,55 @@
       background-size: cover;
     }
 
-    .box {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 25px;
-      max-width: 520px;
-      margin: auto;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    }
+    .faq-link {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 24px;
+  text-decoration: none;
+  color: #0066cc;
+  background: white;
+  border-radius: 50%;
+  padding: 4px 10px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  transition: background 0.3s;
+}
+
+.faq-link:hover {
+  background: #e6f0ff;
+}
+
+
+.box {
+  position: relative; /* Đảm bảo có */
+  background: rgba(255, 255, 255, 0.9);
+  padding: 25px;
+  max-width: 520px;
+  margin: auto;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.faq-link {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  text-decoration: none;
+  color: #d63384; /* Màu hồng nổi bật */
+  background: white;
+  border-radius: 50%;
+  padding: 4px 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+  transition: background 0.3s, transform 0.2s;
+  z-index: 10;
+}
+
+.faq-link:hover {
+  background: #ffe6f0;
+  transform: scale(1.1);
+}
+
 
     h2 {
       color: #0066cc;
@@ -69,6 +110,13 @@
 </head>
 <body>
   <div class="box">
+    <a href="https://docs.google.com/spreadsheets/d/1ycWJZnvW822vo_qjQ1gJDPAjqWKDVsweNUKNYCYBaQM/edit?gid=212231679#gid=212231679"
+    target="_blank"
+    class="faq-link"
+    title="Xem Câu hỏi thường gặp (FAQ)">
+   ❓
+  </a>
+ 
     <h2>HỆ THỐNG TÍNH ĐIỂM TỔ HỢP V-SAT</h2>
 
     <label>Điểm V-SAT môn 1 (thang 150):</label>
@@ -118,7 +166,7 @@
   </div>
 
   <script>
-    const quyTac1 = [
+    const quyTacdemo = [
       { a: 130, b: 150, c: 9.5, d: 10.0 },
       { a: 115, b: 130, c: 9.0, d: 9.5 },
       { a: 100, b: 115, c: 8.0, d: 9.0 },
@@ -221,6 +269,7 @@
   const hb3 = parseFloat(document.getElementById("hb3").value);
   const khuVuc = document.getElementById("khuvucHB").value;
   const output = document.getElementById("outputHB");
+
   const diemHB1 = noiSuy(hb1, quyTacHB);
   const diemHB2 = noiSuy(hb2, quyTacHB);
   const diemHB3 = noiSuy(hb3, quyTacHB);
