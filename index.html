@@ -133,7 +133,19 @@
       <a href="https://zalo.me/g/wfdfve239" target="_blank">Tham Gia Group Zalo Tư Vấn Tuyển Sinh</a>
       <a href="https://docs.google.com/spreadsheets/d/1ycWJZnvW822vo_qjQ1gJDPAjqWKDVsweNUKNYCYBaQM/edit?gid=212231679#gid=212231679" target="_blank">Xem thông tin tổng hợp Q&A Tuyển Sinh CTU</a>
     </div>
-    <div class="close-btn" onclick="document.getElementById('popup').style.display='none'">&#10006;</div>
+      <div class="close-btn" onclick="playVideo()">&#10006;</div>
+      <div id="video-container" style="display: none; margin-top: 10px;">
+        <iframe id="youtube-iframe" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      
+      <script>
+        function playVideo() {
+          const iframe = document.getElementById("youtube-iframe");
+          iframe.src = "https://www.youtube.com/embed/7kO_ALcwNAw?autoplay=1&si=hyPvsvS-VHGL4bkO";
+          document.getElementById("video-container").style.display = "block";
+        }
+      </script>
+
   </div>
 </div>
 
