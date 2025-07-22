@@ -3,123 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <title>Hệ thống Tính điểm Tổ Hợp CTU</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="./icon.png" type="image/x-icon">
   <style>
     body {
       font-family: 'Times New Roman', Times, serif;
+      padding: 30px;
       margin: 0;
-      padding: 20px;
       background: url("nen-ctu.jpg") no-repeat center center fixed;
       background-size: cover;
-      box-sizing: border-box;
-    }
-
-    .box {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 40px 20px 30px;
-      max-width: 550px;
-      margin: 80px auto 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-
-    h2 {
-      color: #cc0000;
-      font-size: 28px;
-      margin-top: 0;
-      text-transform: uppercase;
-    }
-
-    p {
-      font-size: 18px;
-      color: #333;
     }
 
     .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 90, 180, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(to right, #cce6ff, #e6f2ff);
-      border-radius: 16px;
-      padding: 25px 35px;
-      max-width: 520px;
-      margin: 0 auto;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      background: #e6f2ff;
+      border-radius: 20px;
+      padding: 30px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 20px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-      gap: 15px;
-      text-align: left;
+      max-width: 600px;
     }
 
     .popup img {
       width: 110px;
-      flex-shrink: 0;
     }
 
     .popup h3 {
-      margin: 0 0 8px;
-      color: #003366;
-      font-size: 21px;
+      margin-top: 0;
+      color: #004080;
+      font-size: 26px;
     }
 
     .popup a {
       display: block;
-      margin: 4px 0;
+      margin: 8px 0;
       text-decoration: none;
       color: #0066cc;
       font-weight: bold;
-      font-size: 17px;
-      word-break: break-word;
+      font-size: 21px;
     }
 
     .popup a:hover {
       text-decoration: underline;
     }
 
-    @media (max-width: 480px) {
-      .popup {
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        text-align: center;
-      }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
+      color: red;
+      cursor: pointer;
+    }
 
-      .popup img {
-        margin-bottom: 10px;
-      }
+    .box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
 
-      .popup h3 {
-        font-size: 16px;
-      }
 
-      .popup a {
-        font-size: 15px;
-        text-align: center;
-      }
+    h2 {
+      color: #0066cc;
+      text-align: center;
+    }
 
-      .box {
-        padding: 30px 15px;
-        margin-top: 60px;
-      }
+    label, input, select, button {
+      display: block;
+      margin-top: 12px;
+      width: 100%;
+      font-size: 16px;
+    }
 
-      h2 {
-        font-size: 18px;
-      }
+    input, select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
 
-      p {
-        font-size: 16px;
-      }
+    button {
+      padding: 10px;
+      margin-top: 20px;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #004e99;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    ul {
+      padding-left: 20px;
     }
   </style>
 </head>
 <body>
-
-  <div class="box">
-    <h2>🚧 HỆ THỐNG ĐANG BẢO TRÌ 🚧</h2>
-    <p>HỆ THỐNG SẼ ĐƯỢC MỞ VÀO LÚC 16H NGÀY 22/07/2025<br>
-  </div>
-
-  <div class="popup">
+<div class="popup" id="popup">
+  <div class="popup-content">
     <img src="icon.png" alt="capy">
     <div>
       <h3>TỔNG HỢP THÔNG TIN TUYỂN SINH</h3>
@@ -128,7 +137,219 @@
       <a href="https://zalo.me/g/wfdfve239" target="_blank">Tham Gia Group Zalo Tư Vấn Tuyển Sinh</a>
       <a href="https://docs.google.com/spreadsheets/d/1ycWJZnvW822vo_qjQ1gJDPAjqWKDVsweNUKNYCYBaQM/edit?gid=212231679#gid=212231679" target="_blank">Xem thông tin tổng hợp Q&A Tuyển Sinh CTU</a>
     </div>
+    <div class="close-btn" onclick="document.getElementById('popup').style.display='none'">&#10006;</div>
+  </div>
+</div>
+
+  <div class="box">
+    <h2>HỆ THỐNG QUY ĐỔI V-SAT 2025</h2>
+    <label>Chọn môn V-SAT 1:</label>
+    <select id="mon1">
+      <option value="toan">Toán</option>
+      <option value="ly">Vật lý</option>
+      <option value="hoa">Hóa học</option>
+      <option value="sinh">Sinh học</option>
+      <option value="su">Lịch sử</option>
+      <option value="dia">Địa lý</option>
+      <option value="anh">Tiếng Anh</option>
+      <option value="van">Ngữ Văn</option>
+    </select>
+    <input type="number" id="diem1" min="0" max="150" step="0.1">
+
+    <label>Chọn môn V-SAT 2:</label>
+    <select id="mon2">
+      <option value="toan">Toán</option>
+      <option value="ly">Vật lý</option>
+      <option value="hoa">Hóa học</option>
+      <option value="sinh">Sinh học</option>
+      <option value="su">Lịch sử</option>
+      <option value="dia">Địa lý</option>
+      <option value="anh">Tiếng Anh</option>
+      <option value="van">Ngữ Văn</option>
+    </select>
+    <input type="number" id="diem2" min="0" max="150" step="0.1">
+
+    <label>Chọn môn V-SAT 3:</label>
+    <select id="mon3">
+      <option value="toan">Toán</option>
+      <option value="ly">Vật lý</option>
+      <option value="hoa">Hóa học</option>
+      <option value="sinh">Sinh học</option>
+      <option value="su">Lịch sử</option>
+      <option value="dia">Địa lý</option>
+      <option value="anh">Tiếng Anh</option>
+      <option value="van">Ngữ Văn</option>
+    </select>
+    <input type="number" id="diem3" min="0" max="150" step="0.1">
+
+    <button onclick="quyDoiTong()">Tính điểm trung bình</button>
+    <div class="result" id="ketqua"></div>
   </div>
 
+  <script>
+    const quyTacVsat = {
+      toan: [
+        { a: 132, b: 150, c: 8.5, d: 10.0 },
+        { a: 128.5, b: 132, c: 8.1, d: 8.5 },
+        { a: 122.5, b: 128.5, c: 7.75, d: 8.1 },
+        { a: 114.5, b: 122.5, c: 7.0, d: 7.75 },
+        { a: 108, b: 114.5, c: 6.6, d: 7.0 },
+        { a: 102.5, b: 108, c: 6.25, d: 6.6 },
+        { a: 97, b: 102.5, c: 6.0, d: 6.25 },
+        { a: 91, b: 97, c: 5.6, d: 6.0 },
+        { a: 85, b: 91, c: 5.25, d: 5.6 },
+        { a: 77.5, b: 85, c: 5.0, d: 5.25 },
+        { a: 68, b: 77.5, c: 4.5, d: 5.0 },
+        { a: 6, b: 68, c: 1.5, d: 4.5 }
+      ],
+      ly: [
+        { a: 123, b: 147, c: 9.5, d: 10.0 },
+        { a: 118.5, b: 123, c: 9.25, d: 9.5 },
+        { a: 112.5, b: 118.5, c: 9.0, d: 9.25 },
+        { a: 105, b: 112.5, c: 8.5, d: 9.0 },
+        { a: 99.5, b: 105, c: 8.0, d: 8.5 },
+        { a: 94.5, b: 99.5, c: 7.75, d: 8.0 },
+        { a: 90, b: 94.5, c: 7.5, d: 7.75 },
+        { a: 85, b: 90, c: 7.25, d: 7.5 },
+        { a: 80, b: 85, c: 6.75, d: 7.25 },
+        { a: 74, b: 80, c: 6.35, d: 6.75 },
+        { a: 66.5, b: 74, c: 5.75, d: 6.35 },
+        { a: 17, b: 66.5, c: 3.05, d: 5.75 }
+      ],
+      hoa: [
+        { a: 129, b: 150, c: 9.5, d: 10.0 },
+        { a: 124.5, b: 129, c: 9.25, d: 9.5 },
+        { a: 117, b: 124.5, c: 8.75, d: 9.25 },
+        { a: 107.5, b: 117, c: 8.25, d: 8.75 },
+        { a: 100.5, b: 107.5, c: 7.75, d: 8.25 },
+        { a: 94, b: 100.5, c: 7.25, d: 7.75 },
+        { a: 88, b: 94, c: 6.75, d: 7.25 },
+        { a: 81.5, b: 88, c: 6.25, d: 6.75 },
+        { a: 75.5, b: 81.5, c: 5.75, d: 6.25 },
+        { a: 68.5, b: 75.5, c: 5.25, d: 5.75 },
+        { a: 59.5, b: 68.5, c: 4.6, d: 5.25 },
+        { a: 20, b: 59.5, c: 1.35, d: 4.6 }
+      ],
+      sinh: [
+        { a: 130.5, b: 150, c: 9.0, d: 9.75 },
+        { a: 126.5, b: 130.5, c: 8.75, d: 9.0 },
+        { a: 120.5, b: 126.5, c: 8.34, d: 8.75 },
+        { a: 112.5, b: 120.5, c: 7.85, d: 8.34 },
+        { a: 105.5, b: 112.5, c: 7.5, d: 7.85 },
+        { a: 100, b: 105.5, c: 7.25, d: 7.5 },
+        { a: 94.5, b: 100, c: 6.85, d: 7.25 },
+        { a: 88.5, b: 94.5, c: 6.5, d: 6.85 },
+        { a: 82.5, b: 88.5, c: 6.25, d: 6.5 },
+        { a: 76, b: 82.5, c: 5.85, d: 6.25 },
+        { a: 66.5, b: 76, c: 5.25, d: 5.85 },
+        { a: 26.5, b: 66.5, c: 2.8, d: 5.25 }
+      ],
+      su: [
+        { a: 133.5, b: 150, c: 9.75, d: 10.0 },
+        { a: 131, b: 133.5, c: 9.5, d: 9.75 },
+        { a: 126.5, b: 131, c: 9.25, d: 9.5 },
+        { a: 120.5, b: 126.5, c: 9.0, d: 9.25 },
+        { a: 115, b: 120.5, c: 8.5, d: 9.0 },
+        { a: 110, b: 115, c: 8.25, d: 8.5 },
+        { a: 105.5, b: 110, c: 8.0, d: 8.25 },
+        { a: 101, b: 105.5, c: 7.75, d: 8.0 },
+        { a: 95.5, b: 101, c: 7.5, d: 7.75 },
+        { a: 88.5, b: 95.5, c: 7.0, d: 7.5 },
+        { a: 79.5, b: 88.5, c: 6.35, d: 7.0 },
+        { a: 36.5, b: 79.5, c: 2.95, d: 6.35 }
+      ],
+      dia: [
+        { a: 124, b: 141, c: 10.0, d: 10.0 },
+        { a: 120.5, b: 124, c: 10.0, d: 10.0 },
+        { a: 115.5, b: 120.5, c: 9.75, d: 10.0 },
+        { a: 108.5, b: 115.5, c: 9.25, d: 9.75 },
+        { a: 103, b: 108.5, c: 9.0, d: 9.25 },
+        { a: 98.5, b: 103, c: 8.75, d: 9.0 },
+        { a: 94, b: 98.5, c: 8.5, d: 8.75 },
+        { a: 89.5, b: 94, c: 8.25, d: 8.5 },
+        { a: 84.5, b: 89.5, c: 7.75, d: 8.25 },
+        { a: 79, b: 84.5, c: 7.25, d: 7.75 },
+        { a: 71, b: 79, c: 6.5, d: 7.25 },
+        { a: 31, b: 71, c: 3.0, d: 6.5 }
+      ],
+      anh: [
+        { a: 131, b: 150, c: 7.75, d: 9.75 },
+        { a: 127.5, b: 131, c: 7.5, d: 7.75 },
+        { a: 120.5, b: 127.5, c: 7.0, d: 7.5 },
+        { a: 112, b: 120.5, c: 6.5, d: 7.0 },
+        { a: 105, b: 112, c: 6.0, d: 6.5 },
+        { a: 98.5, b: 105, c: 5.75, d: 6.0 },
+        { a: 92, b: 98.5, c: 5.5, d: 5.75 },
+        { a: 85.5, b: 92, c: 5.25, d: 5.5 },
+        { a: 78.5, b: 85.5, c: 5.0, d: 5.25 },
+        { a: 70.5, b: 78.5, c: 4.5, d: 5.0 },
+        { a: 60, b: 70.5, c: 4.0, d: 4.5 },
+        { a: 20.5, b: 60, c: 1.25, d: 4.0 }
+      ],
+      van: [
+        { a: 129.5, b: 146, c: 9.25, d: 9.75 },
+        { a: 127.5, b: 129.5, c: 9.0, d: 9.25 },
+        { a: 124, b: 127.5, c: 9.0, d: 9.0 },
+        { a: 119.5, b: 124, c: 8.75, d: 9.0 },
+        { a: 115.5, b: 119.5, c: 8.5, d: 8.75 },
+        { a: 112.5, b: 115.5, c: 8.25, d: 8.5 },
+        { a: 109, b: 112.5, c: 8.0, d: 8.25 },
+        { a: 106, b: 109, c: 7.75, d: 8.0 },
+        { a: 102, b: 106, c: 7.5, d: 7.75 },
+        { a: 97, b: 102, c: 7.25, d: 7.5 },
+        { a: 90, b: 97, c: 6.75, d: 7.25 },
+        { a: 5, b: 90, c: 3.5, d: 6.75 }
+      ]
+    };
+
+    function noiSuy(x, rules) {
+      for (const { a, b, c, d } of rules) {
+        if (x >= a && x <= b) return (c + (x - a) * (d - c) / (b - a)).toFixed(2);
+      }
+      return "Không hợp lệ";
+    }
+
+    function quyDoiTong() {
+    const mon1 = document.getElementById("mon1").value;
+    const diem1 = parseFloat(document.getElementById("diem1").value);
+    const mon2 = document.getElementById("mon2").value;
+    const diem2 = parseFloat(document.getElementById("diem2").value);
+    const mon3 = document.getElementById("mon3").value;
+    const diem3 = parseFloat(document.getElementById("diem3").value);
+
+    const output = document.getElementById("ketqua");
+
+    if (
+      isNaN(diem1) || diem1 < 0 || diem1 > 150 ||
+      isNaN(diem2) || diem2 < 0 || diem2 > 150 ||
+      isNaN(diem3) || diem3 < 0 || diem3 > 150
+    ) {
+      output.textContent = "⚠️ Vui lòng nhập đủ 3 điểm hợp lệ (0–150).";
+      return;
+    }
+
+    
+    const diemQuyDoi1 = parseFloat(noiSuy(diem1, quyTacVsat[mon1]));
+    const diemQuyDoi2 = parseFloat(noiSuy(diem2, quyTacVsat[mon2]));
+    const diemQuyDoi3 = parseFloat(noiSuy(diem3, quyTacVsat[mon3]));
+
+    const diemTB = ((diemQuyDoi1 + diemQuyDoi2 + diemQuyDoi3)).toFixed(2);
+
+    output.innerHTML = `
+      ✅ Điểm đã quy đổi: <br>
+      - Điểm V-SAT Môn (${mon1.toUpperCase()}): <strong>${diemQuyDoi1}</strong><br>
+      - Điểm V-SAT Môn (${mon2.toUpperCase()}): <strong>${diemQuyDoi2}</strong><br>
+      - Điểm V-SAT Môn (${mon3.toUpperCase()}): <strong>${diemQuyDoi3}</strong><br><br>
+      🎯 <strong>TỔNG ĐIỂM XÉT TUYỂN: ${diemTB}</strong><br><br>
+
+      Điểm xét tuyển chưa bao gồm Ưu Tiên Đối Tượng & Khu Vực.<br>
+      Kết quả dựa trên quy tắc chung của Bộ Giáo Dục!<br>
+      Đang chờ Update quy tắc đổi điểm từ ĐẠI HỌC CẦN THƠ!
+    `;
+
+  }
+</script>
+    
+  </script>
 </body>
 </html>
